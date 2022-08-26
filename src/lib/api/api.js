@@ -2,13 +2,24 @@ import axios from 'axios'
 
 const api = {
     call: async(endpoint, data={}) => {
+        
         const url = process.env.REACT_APP_API_URL + endpoint.url
+        console.log(url);
+
         const request = {
             url,
             method:endpoint.method,
             data
         }
-        const response = await axios(request)
-        return response.data
+
+        
+        try {
+            const response = await axios(request)
+            return response.data
+        } catch (err) {
+            return err.response.data.data
+        }
     }
 }
+
+export default api

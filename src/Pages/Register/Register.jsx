@@ -1,38 +1,32 @@
-import React,{useState} from 'react'
-import { Container, Row, Col, Form, Button} from 'react-bootstrap'
+import React from 'react'
+import { Container } from 'react-bootstrap'
+import RegisterForm from '../../Components/RegisterForm'
+import { api, endpoints } from '../../lib/api'
 
 const Register = () => {
 
-  const [firstName,setFirstName] = useState('')
-  
-  const handleSubmit = async(e) => {
-    e.preventDeafult()
-    alert('submit')
+  const submitRegister = async (data,setErrors) => {
+
+    
+    const result = await api.call(endpoints.register, data)
+
+    console.log(data);
+    console.log(result);
+
+    if(!result.success){
+      setErrors([result])
+      return
+    }
+    alert('Redirect to login!')
   }
 
   return (
-    <Container>
-      <h1>Register</h1>
-      <Row>
-        <Col>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className='mb-3' controlId='formBasicEmail' >
-              <Form.Label>First Name</Form.Label>
-              <input 
-                type='text'
-                className='form-control'
-                value={firstName}
-                onChange={(e)=>{setFirstName(e.target.value)}}
-                placeholder="First Name"
-              />
-            </Form.Group>
-            <div className='submit'>
-              <Button type='submit'>Submit</Button>
-            </div>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container>
+        <h1>Register</h1>
+      </Container>
+      <RegisterForm submit={submitRegister}/>
+    </>
   )
 }
 
